@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartCalc</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0d0f;
+    --surface: #16161a;
+    --surface2: #1e1e24;
+    --border: #2a2a35;
+    --text: #f0ede6;
+    --muted: #7a7a8a;
+    --radius: 16px;
+    --c1: #7F77DD; --c1l: #EEEDFE;
+    --c2: #D4537E; --c2l: #FBEAF0;
+    --c3: #1D9E75; --c3l: #E1F5EE;
+    --c4: #BA7517; --c4l: #FAEEDA;
+    --c5: #378ADD; --c5l: #E6F1FB;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; min-height:100vh; }
+
+  /* HEADER */
+  header { padding:36px 48px 0; display:flex; align-items:center; gap:16px; }
+  .logo { font-family:'Playfair Display',serif; font-size:2rem; font-weight:900; letter-spacing:-1px; }
+  .logo span { color:#7dff6a; }
+  .tagline { font-family:'DM Mono',monospace; font-size:0.72rem; color:var(--muted); margin-left:auto; letter-spacing:.1em; text-transform:uppercase; }
+
+  /* NAV — opción A: pills con ícono */
+  nav { padding:28px 48px 0; display:flex; gap:10px; flex-wrap:wrap; }
+  .tab {
+    display:flex; align-items:center; gap:8px;
+    padding:10px 20px; border-radius:100px; border:none;
+    font-family:'DM Sans',sans-serif; font-size:0.85rem; font-weight:500;
+    cursor:pointer; transition:all .18s; opacity:.55;
+  }
+  .tab svg { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+  .tab:hover { opacity:.8; }
+  .tab.active { opacity:1; outline:3px solid rgba(255,255,255,.15); outline-offset:2px; }
+  .tab[data-tab="cientifica"] { background:var(--c1); color:var(--c1l); }
+  .tab[data-tab="imc"]        { background:var(--c2); color:var(--c2l); }
+  .tab[data-tab="regla3"]     { background:var(--c3); color:var(--c3l); }
+  .tab[data-tab="iva"]        { background:var(--c4); color:var(--c4l); }
+  .tab[data-tab="calorias"]   { background:var(--c5); color:var(--c5l); }
+
+  /* MAIN */
+  main { padding:36px 48px 60px; }
+  .panel { display:none; animation:fadeIn .3s ease; }
+  .panel.active { display:block; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+
+  .panel-title { font-family:'Playfair Display',serif; font-size:2.2rem; font-weight:700; letter-spacing:-1px; margin-bottom:4px; }
+  .panel-sub { font-family:'DM Mono',monospace; font-size:.72rem; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; margin-bottom:28px; }
+
+  /* CARDS */
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:26px; margin-bottom:16px; }
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media(max-width:700px){ .two-col{grid-template-columns:1fr} }
+
+  /* FORM */
+  label { display:block; font-family:'DM Mono',monospace; font-size:.72rem; color:var(--muted); letter-spacing:.1em; text-transform:uppercase; margin-bottom:8px; }
+  input,select { width:100%; background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:11px 14px; color:var(--text); font-family:'DM Mono',monospace; font-size:.95rem; outline:none; transition:border-color .2s; }
+  input:focus,select:focus { border-color:var(--c1); }
+  select option { background:var(--surface2); }
+  .field { margin-bottom:14px; }
+
+  /* BUTTONS */
+  .btn { display:inline-block; padding:11px 24px; border-radius:10px; border:none; cursor:pointer; font-family:'DM Mono',monospace; font-size:.82rem; font-weight:500; transition:all .18s; }
+  .btn:hover { filter:brightness(1.1); transform:translateY(-1px); }
+  .btn-secondary { background:var(--surface2); color:var(--muted); border:1px solid var(--border); }
+  .btn-secondary:hover { color:var(--text); filter:none; }
+  .btn-row { display:flex; gap:10px; margin-top:6px; flex-wrap:wrap; }
+  .btn-1 { background:var(--c1); color:var(--c1l); }
+  .btn-2 { background:var(--c2); color:var(--c2l); }
+  .btn-3 { background:var(--c3); color:var(--c3l); }
+  .btn-4 { background:var(--c4); color:var(--c4l); }
+  .btn-5 { background:var(--c5); color:var(--c5l); }
+
+  /* RESULT */
+  .result-box { background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius); padding:22px 26px; margin-top:18px; display:none; }
+  .result-box.show { display:block; animation:fadeIn .25s ease; }
+  .result-label { font-family:'DM Mono',monospace; font-size:.7rem; color:var(--muted); letter-spacing:.12em; text-transform:uppercase; margin-bottom:4px; }
+  .result-value { font-family:'Playfair Display',serif; font-size:2.2rem; font-weight:700; letter-spacing:-1px; }
+  .result-note { font-size:.84rem; color:var(--muted); margin-top:6px; }
+
+  /* ══ CIENTÍFICA — RETRO TERMINAL ══ */
+  .sci-wrap { background:#2d2d2d; border-radius:16px; padding:14px; border:2px solid #444; max-width:460px; }
+  .sci-screen { background:#1a2a1a; border-radius:8px; padding:12px 14px 8px; margin-bottom:12px; text-align:right; border:1px solid #333; }
+  .sci-expr { font-family:'DM Mono',monospace; font-size:.82rem; color:#4a7; min-height:18px; }
+  .sci-num  { font-family:'DM Mono',monospace; font-size:2rem; color:#7dff6a; font-weight:700; letter-spacing:1px; word-break:break-all; }
+  .sci-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:6px; }
+  .sb { border:none; border-radius:7px; padding:11px 4px; font-family:'DM Mono',monospace; font-size:.78rem; cursor:pointer; border-bottom:3px solid rgba(0,0,0,.35); transition:all .12s; }
+  .sb:active { transform:scale(.94); border-bottom-width:1px; }
+  .sb.fn  { background:#3a3a4a; color:#a0a0c0; }
+  .sb.fn:hover { background:#42424f; }
+  .sb.num { background:#4a4a4a; color:#ddd; }
+  .sb.num:hover { background:#555; }
+  .sb.op  { background:#3a5a3a; color:#7dff6a; }
+  .sb.op:hover { background:#445a44; }
+  .sb.eq  { background:#c85000; color:#fff; font-weight:700; font-size:.9rem; }
+  .sb.eq:hover { background:#d96000; }
+  .sb.del { background:#5a2a2a; color:#ff7070; }
+  .sb.del:hover { background:#6a3333; }
+  .sb.sp2 { grid-column:span 2; }
+
+  /* IMC bar */
+  .imc-bar-wrap { margin-top:16px; background:var(--surface2); border-radius:100px; height:12px; position:relative; overflow:visible; }
+  .imc-bar { background:linear-gradient(90deg,#4af0c8 0%,#c8f04a 35%,#f0a84a 65%,#f04a8c 100%); border-radius:100px; height:100%; }
+  .imc-marker { position:absolute; top:-4px; width:20px; height:20px; background:#fff; border-radius:50%; border:3px solid #0d0d0f; box-shadow:0 0 0 2px var(--c2); transform:translateX(-50%); transition:left .4s cubic-bezier(.34,1.56,.64,1); }
+
+  /* IVA rows */
+  .iva-row { display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border); font-family:'DM Mono',monospace; font-size:.86rem; }
+  .iva-row:last-child { border-bottom:none; }
+  .iva-row .lbl { color:var(--muted); }
+
+  /* Calories macros */
+  .macro-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:12px; }
+  .macro-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px; text-align:center; }
+  .macro-val { font-family:'DM Mono',monospace; font-size:1.15rem; }
+  .macro-lbl { font-size:.7rem; color:var(--muted); margin-top:4px; font-family:'DM Mono',monospace; text-transform:uppercase; letter-spacing:.08em; }
+
+  /* radio */
+  .radio-group { display:flex; gap:10px; flex-wrap:wrap; }
+  .radio-btn { padding:8px 16px; border-radius:100px; border:1px solid var(--border); background:transparent; color:var(--muted); font-family:'DM Mono',monospace; font-size:.76rem; cursor:pointer; transition:all .18s; }
+  .radio-btn.sel { border-color:var(--c5); color:var(--c5); background:rgba(55,138,221,.12); }
+
+  /* FOOTER */
+  footer { text-align:center; padding:0 0 36px; }
+  .footer-brand { font-family:'DM Mono',monospace; font-size:.72rem; color:var(--muted); letter-spacing:.08em; }
+  .footer-brand strong { color:var(--text); font-weight:500; }
+  .footer-divider { width:40px; height:1px; background:var(--border); margin:0 auto 12px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Smart<span>Calc</span></div>
+  <div class="tagline">Calculadoras · Chile</div>
+</header>
+
+<nav>
+  <button class="tab active" data-tab="cientifica">
+    <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h8m-8 5h16M15 12l3 3-3 3"/></svg>
+    Científica
+  </button>
+  <button class="tab" data-tab="imc">
+    <svg viewBox="0 0 24 24"><path d="M12 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM6 21v-1a6 6 0 0 1 12 0v1"/><path d="M17 13l2 2 2-2"/></svg>
+    IMC
+  </button>
+  <button class="tab" data-tab="regla3">
+    <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h7M17 12l4 4-4 4"/></svg>
+    Regla de 3
+  </button>
+  <button class="tab" data-tab="iva">
+    <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h2m4 0h4"/></svg>
+    IVA Chile
+  </button>
+  <button class="tab" data-tab="calorias">
+    <svg viewBox="0 0 24 24"><path d="M12 2c0 6-6 8-6 14a6 6 0 0 0 12 0c0-6-6-8-6-14z"/><path d="M10 16a2 2 0 0 0 4 0"/></svg>
+    Calorías
+  </button>
+</nav>
+
+<main>
+
+  <!-- ══ 1. CIENTÍFICA ══ -->
+  <div class="panel active" id="panel-cientifica">
+    <div class="panel-title">Calculadora Científica</div>
+    <div class="panel-sub">Retro Terminal · Operaciones avanzadas</div>
+    <div class="sci-wrap">
+      <div class="sci-screen">
+        <div class="sci-expr" id="sci-expr">&nbsp;</div>
+        <div class="sci-num" id="sci-num">0</div>
+      </div>
+      <div class="sci-grid">
+        <button class="sb fn" onclick="sciFn('sin(')">sin</button>
+        <button class="sb fn" onclick="sciFn('cos(')">cos</button>
+        <button class="sb fn" onclick="sciFn('tan(')">tan</button>
+        <button class="sb fn" onclick="sciFn('log(')">log</button>
+        <button class="sb fn" onclick="sciFn('ln(')">ln</button>
+
+        <button class="sb fn" onclick="sciFn('sqrt(')">√</button>
+        <button class="sb fn" onclick="sciFn('**2')">x²</button>
+        <button class="sb fn" onclick="sciFn('**')">xʸ</button>
+        <button class="sb fn" onclick="sciFn('Math.PI')">π</button>
+        <button class="sb fn" onclick="sciFn('Math.E')">e</button>
+
+        <button class="sb fn" onclick="sciFn('1/')">1/x</button>
+        <button class="sb fn" onclick="sciFn('abs(')">|x|</button>
+        <button class="sb fn" onclick="sciToggleSign()">+/−</button>
+        <button class="sb fn" onclick="sciFn('%')">%</button>
+        <button class="sb del" onclick="sciDel()">⌫</button>
+
+        <button class="sb fn" onclick="sciFn('(')">(</button>
+        <button class="sb fn" onclick="sciFn(')')">)</button>
+        <button class="sb del" onclick="sciClear()">AC</button>
+        <button class="sb op" onclick="sciFn('/')">÷</button>
+        <button class="sb op" onclick="sciFn('*')">×</button>
+
+        <button class="sb num" onclick="sciFn('7')">7</button>
+        <button class="sb num" onclick="sciFn('8')">8</button>
+        <button class="sb num" onclick="sciFn('9')">9</button>
+        <button class="sb op"  onclick="sciFn('-')">−</button>
+        <button class="sb op"  onclick="sciFn('+')">+</button>
+
+        <button class="sb num" onclick="sciFn('4')">4</button>
+        <button class="sb num" onclick="sciFn('5')">5</button>
+        <button class="sb num" onclick="sciFn('6')">6</button>
+        <button class="sb eq" onclick="sciEqual()" style="grid-column:span 2;grid-row:span 2">=</button>
+
+        <button class="sb num" onclick="sciFn('1')">1</button>
+        <button class="sb num" onclick="sciFn('2')">2</button>
+        <button class="sb num" onclick="sciFn('3')">3</button>
+
+        <button class="sb num sp2" onclick="sciFn('0')">0</button>
+        <button class="sb num" onclick="sciFn('.')">.</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 2. IMC ══ -->
+  <div class="panel" id="panel-imc">
+    <div class="panel-title">Índice de Masa Corporal</div>
+    <div class="panel-sub">Peso / Talla²</div>
+    <div class="two-col" style="max-width:700px">
+      <div class="card">
+        <div class="field"><label>Peso (kg)</label><input type="number" id="imc-peso" placeholder="ej. 70" min="1"></div>
+        <div class="field"><label>Altura (cm)</label><input type="number" id="imc-altura" placeholder="ej. 170" min="1"></div>
+        <div class="field"><label>Edad</label><input type="number" id="imc-edad" placeholder="ej. 30" min="1"></div>
+        <div class="field"><label>Sexo</label>
+          <select id="imc-sexo"><option value="m">Masculino</option><option value="f">Femenino</option></select>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-2" onclick="calcIMC()">Calcular IMC</button>
+          <button class="btn btn-secondary" onclick="clearIMC()">Limpiar</button>
+        </div>
+      </div>
+      <div>
+        <div class="result-box" id="imc-result">
+          <div class="result-label">Tu IMC</div>
+          <div class="result-value" id="imc-val" style="color:var(--c2)">—</div>
+          <div class="result-note" id="imc-cat">—</div>
+          <div class="imc-bar-wrap" style="margin-top:20px">
+            <div class="imc-bar"></div>
+            <div class="imc-marker" id="imc-marker" style="left:0%"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:6px;font-family:'DM Mono',monospace;font-size:.64rem;color:var(--muted)">
+            <span>16</span><span>18.5</span><span>25</span><span>30</span><span>40</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="result-label" style="margin-bottom:10px">Clasificación OMS</div>
+          <div style="font-family:'DM Mono',monospace;font-size:.75rem;color:var(--muted);line-height:2.1">
+            <span style="color:#4af0c8">●</span> &lt;18.5 — Bajo peso<br>
+            <span style="color:#c8f04a">●</span> 18.5–24.9 — Normal<br>
+            <span style="color:#f0a84a">●</span> 25–29.9 — Sobrepeso<br>
+            <span style="color:#f04a8c">●</span> ≥30 — Obesidad
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 3. REGLA DE 3 ══ -->
+  <div class="panel" id="panel-regla3">
+    <div class="panel-title">Regla de Tres</div>
+    <div class="panel-sub">Proporciones directas e inversas</div>
+    <div style="max-width:540px">
+      <div class="card">
+        <div class="field"><label>Tipo de proporción</label>
+          <select id="r3-tipo">
+            <option value="directa">Directa (más → más)</option>
+            <option value="inversa">Inversa (más → menos)</option>
+          </select>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;margin-bottom:14px">
+          <div><label>A</label><input type="number" id="r3-a" placeholder="ej. 5"></div>
+          <div style="text-align:center;font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--muted);margin-top:20px">→</div>
+          <div><label>B</label><input type="number" id="r3-b" placeholder="ej. 10"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;margin-bottom:14px">
+          <div><label>C</label><input type="number" id="r3-c" placeholder="ej. 3"></div>
+          <div style="text-align:center;font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--c3);margin-top:20px">→</div>
+          <div><label>X (incógnita)</label><input type="text" id="r3-x" placeholder="?" readonly style="color:var(--c3);font-weight:600"></div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-3" onclick="calcRegla3()">Calcular X</button>
+          <button class="btn btn-secondary" onclick="clearR3()">Limpiar</button>
+        </div>
+        <div class="result-box" id="r3-result">
+          <div class="result-label">Resultado</div>
+          <div class="result-value" id="r3-val" style="color:var(--c3)">—</div>
+          <div class="result-note" id="r3-formula">—</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 4. IVA ══ -->
+  <div class="panel" id="panel-iva">
+    <div class="panel-title">Calculadora de IVA</div>
+    <div class="panel-sub">IVA 19% · SII Chile</div>
+    <div style="max-width:540px">
+      <div class="card">
+        <div class="field"><label>Tipo de cálculo</label>
+          <select id="iva-tipo">
+            <option value="agregar">Agregar IVA (precio neto → con IVA)</option>
+            <option value="descontar">Descontar IVA (precio con IVA → neto)</option>
+          </select>
+        </div>
+        <div class="field"><label>Monto ($)</label><input type="number" id="iva-monto" placeholder="ej. 100000" min="0"></div>
+        <div class="field"><label>Tasa IVA (%)</label><input type="number" id="iva-tasa" value="19" min="0" max="100"></div>
+        <div class="btn-row">
+          <button class="btn btn-4" onclick="calcIVA()">Calcular</button>
+          <button class="btn btn-secondary" onclick="clearIVA()">Limpiar</button>
+        </div>
+        <div class="result-box" id="iva-result">
+          <div class="iva-row"><span class="lbl">Precio neto</span><span id="iva-neto">—</span></div>
+          <div class="iva-row"><span class="lbl" id="iva-tasa-lbl">IVA (19%)</span><span id="iva-iva">—</span></div>
+          <div class="iva-row" style="margin-top:4px">
+            <span style="color:var(--text);font-weight:500;font-family:'DM Mono',monospace;font-size:.88rem">Total</span>
+            <span class="result-value" id="iva-total" style="font-size:1.6rem;color:var(--c4)">—</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 5. CALORÍAS ══ -->
+  <div class="panel" id="panel-calorias">
+    <div class="panel-title">Calculadora de Calorías</div>
+    <div class="panel-sub">TMB · Mifflin-St Jeor</div>
+    <div class="two-col" style="max-width:800px">
+      <div class="card">
+        <div class="field"><label>Sexo</label>
+          <div class="radio-group">
+            <button class="radio-btn sel" id="cal-m" onclick="selSexo('m')">Masculino</button>
+            <button class="radio-btn" id="cal-f" onclick="selSexo('f')">Femenino</button>
+          </div>
+        </div>
+        <div class="field"><label>Edad (años)</label><input type="number" id="cal-edad" placeholder="ej. 30" min="1"></div>
+        <div class="field"><label>Peso (kg)</label><input type="number" id="cal-peso" placeholder="ej. 70" min="1"></div>
+        <div class="field"><label>Altura (cm)</label><input type="number" id="cal-altura" placeholder="ej. 170" min="1"></div>
+        <div class="field"><label>Nivel de actividad</label>
+          <select id="cal-actividad">
+            <option value="1.2">Sedentario (sin ejercicio)</option>
+            <option value="1.375">Ligero (1–3 días/sem)</option>
+            <option value="1.55" selected>Moderado (3–5 días/sem)</option>
+            <option value="1.725">Activo (6–7 días/sem)</option>
+            <option value="1.9">Muy activo (trabajo físico)</option>
+          </select>
+        </div>
+        <div class="field"><label>Objetivo</label>
+          <select id="cal-objetivo">
+            <option value="perder">Perder peso (déficit 500 kcal)</option>
+            <option value="mantener" selected>Mantener peso</option>
+            <option value="ganar">Ganar músculo (superávit 300 kcal)</option>
+          </select>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-5" onclick="calcCalorias()">Calcular</button>
+          <button class="btn btn-secondary" onclick="clearCal()">Limpiar</button>
+        </div>
+      </div>
+      <div>
+        <div class="result-box" id="cal-result">
+          <div class="result-label">Calorías diarias</div>
+          <div class="result-value" id="cal-val" style="color:var(--c5)">—</div>
+          <div class="result-note" id="cal-note">—</div>
+          <div class="macro-grid">
+            <div class="macro-card"><div class="macro-val" id="cal-carb" style="color:var(--c4)">—</div><div class="macro-lbl">Carbos (g)</div></div>
+            <div class="macro-card"><div class="macro-val" id="cal-prot" style="color:var(--c3)">—</div><div class="macro-lbl">Proteína (g)</div></div>
+            <div class="macro-card"><div class="macro-val" id="cal-gras" style="color:var(--c2)">—</div><div class="macro-lbl">Grasas (g)</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="result-label" style="margin-bottom:10px">Distribución macros</div>
+          <div style="font-family:'DM Mono',monospace;font-size:.75rem;color:var(--muted);line-height:2.1">
+            <span style="color:var(--c4)">●</span> Carbohidratos 50%<br>
+            <span style="color:var(--c3)">●</span> Proteínas 25%<br>
+            <span style="color:var(--c2)">●</span> Grasas 25%
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-divider"></div>
+  <div class="footer-brand">
+    SmartCalc · <strong>D&amp;QUE Labs</strong> · 2025
+  </div>
+</footer>
+
+<script>
+/* TABS */
+document.querySelectorAll('.tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+  });
+});
+
+/* HELPERS */
+const fmt = n => new Intl.NumberFormat('es-CL').format(Math.round(n));
+const fmtCLP = n => '$ ' + fmt(n);
+
+/* ══ CIENTÍFICA ══ */
+let sciExpr = '', sciDisplay = '0', sciJustEvaled = false;
+function updateSci(){
+  document.getElementById('sci-num').textContent = sciDisplay;
+  document.getElementById('sci-expr').textContent = sciExpr || '\u00a0';
+}
+function sciFn(v){
+  if(sciJustEvaled){
+    const ops = ['+','-','*','/','**','%'];
+    if(ops.includes(v)){ sciExpr = sciDisplay + v; }
+    else { sciExpr = v; }
+    sciJustEvaled = false;
+  } else { sciExpr += v; }
+  sciDisplay = sciExpr;
+  updateSci();
+}
+function sciDel(){
+  if(sciJustEvaled){ sciClear(); return; }
+  sciExpr = sciExpr.slice(0,-1);
+  sciDisplay = sciExpr || '0';
+  updateSci();
+}
+function sciClear(){ sciExpr=''; sciDisplay='0'; sciJustEvaled=false; updateSci(); }
+function sciToggleSign(){
+  sciExpr = sciExpr.startsWith('-') ? sciExpr.slice(1) : '-'+sciExpr;
+  sciDisplay = sciExpr;
+  updateSci();
+}
+function sciEqual(){
+  try {
+    let expr = sciExpr
+      .replace(/sin\(/g,'Math.sin(').replace(/cos\(/g,'Math.cos(')
+      .replace(/tan\(/g,'Math.tan(').replace(/log\(/g,'Math.log10(')
+      .replace(/ln\(/g,'Math.log(').replace(/sqrt\(/g,'Math.sqrt(')
+      .replace(/abs\(/g,'Math.abs(');
+    expr = expr.replace(/Math\.(sin|cos|tan)\(([^)]+)\)/g,(_,fn,arg)=>`Math.${fn}((${arg})*Math.PI/180)`);
+    let r = Function('"use strict";return('+expr+')')();
+    if(!isFinite(r)) throw 0;
+    document.getElementById('sci-expr').textContent = sciExpr + ' =';
+    sciDisplay = parseFloat(r.toFixed(10)).toString();
+    document.getElementById('sci-num').textContent = sciDisplay;
+    sciJustEvaled = true;
+  } catch(e){
+    document.getElementById('sci-num').textContent = 'Error';
+    sciExpr = ''; sciJustEvaled = true;
+  }
+}
+
+/* ══ IMC ══ */
+function calcIMC(){
+  const p=parseFloat(document.getElementById('imc-peso').value);
+  const h=parseFloat(document.getElementById('imc-altura').value)/100;
+  if(!p||!h){alert('Ingresa peso y altura.');return;}
+  const imc=p/(h*h);
+  let cat='',color='';
+  if(imc<16)       {cat='⚠ Desnutrición severa';color='#4af0c8';}
+  else if(imc<18.5){cat='↓ Bajo peso';color='#4af0c8';}
+  else if(imc<25)  {cat='✓ Peso normal';color='#c8f04a';}
+  else if(imc<30)  {cat='↑ Sobrepeso';color='#f0a84a';}
+  else if(imc<35)  {cat='▲ Obesidad grado I';color='#f04a8c';}
+  else if(imc<40)  {cat='▲▲ Obesidad grado II';color='#f04a8c';}
+  else             {cat='▲▲▲ Obesidad mórbida';color='#f04a8c';}
+  document.getElementById('imc-val').textContent=imc.toFixed(1);
+  document.getElementById('imc-val').style.color=color;
+  document.getElementById('imc-cat').textContent=cat;
+  const pct=Math.min(100,Math.max(0,((imc-16)/(40-16))*100));
+  document.getElementById('imc-marker').style.left=pct+'%';
+  document.getElementById('imc-result').classList.add('show');
+}
+function clearIMC(){
+  ['imc-peso','imc-altura','imc-edad'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('imc-result').classList.remove('show');
+}
+
+/* ══ REGLA DE 3 ══ */
+function calcRegla3(){
+  const a=parseFloat(document.getElementById('r3-a').value);
+  const b=parseFloat(document.getElementById('r3-b').value);
+  const c=parseFloat(document.getElementById('r3-c').value);
+  const tipo=document.getElementById('r3-tipo').value;
+  if(!a||!b||!c){alert('Completa A, B y C.');return;}
+  let x,formula;
+  if(tipo==='directa'){x=(b*c)/a;formula=`Si ${a} → ${b}, entonces ${c} → X = (${b} × ${c}) ÷ ${a}`;}
+  else{x=(a*b)/c;formula=`Inversa: Si ${a} → ${b}, entonces ${c} → X = (${a} × ${b}) ÷ ${c}`;}
+  document.getElementById('r3-x').value=parseFloat(x.toFixed(6));
+  document.getElementById('r3-val').textContent=parseFloat(x.toFixed(6));
+  document.getElementById('r3-formula').textContent=formula;
+  document.getElementById('r3-result').classList.add('show');
+}
+function clearR3(){
+  ['r3-a','r3-b','r3-c','r3-x'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('r3-result').classList.remove('show');
+}
+
+/* ══ IVA ══ */
+function calcIVA(){
+  const monto=parseFloat(document.getElementById('iva-monto').value);
+  const tasa=parseFloat(document.getElementById('iva-tasa').value)/100;
+  const tipo=document.getElementById('iva-tipo').value;
+  if(!monto||isNaN(monto)){alert('Ingresa un monto válido.');return;}
+  let neto,iva,total;
+  if(tipo==='agregar'){neto=monto;iva=neto*tasa;total=neto+iva;}
+  else{total=monto;neto=total/(1+tasa);iva=total-neto;}
+  const pct=(tasa*100).toFixed(0);
+  document.getElementById('iva-neto').textContent=fmtCLP(neto);
+  document.getElementById('iva-iva').textContent=fmtCLP(iva);
+  document.getElementById('iva-tasa-lbl').textContent=`IVA (${pct}%)`;
+  document.getElementById('iva-total').textContent=fmtCLP(total);
+  document.getElementById('iva-result').classList.add('show');
+}
+function clearIVA(){
+  document.getElementById('iva-monto').value='';
+  document.getElementById('iva-result').classList.remove('show');
+}
+
+/* ══ CALORÍAS ══ */
+let calSexo='m';
+function selSexo(s){
+  calSexo=s;
+  document.getElementById('cal-m').classList.toggle('sel',s==='m');
+  document.getElementById('cal-f').classList.toggle('sel',s==='f');
+}
+function calcCalorias(){
+  const edad=parseFloat(document.getElementById('cal-edad').value);
+  const peso=parseFloat(document.getElementById('cal-peso').value);
+  const altura=parseFloat(document.getElementById('cal-altura').value);
+  const act=parseFloat(document.getElementById('cal-actividad').value);
+  const obj=document.getElementById('cal-objetivo').value;
+  if(!edad||!peso||!altura){alert('Completa todos los campos.');return;}
+  let tmb=calSexo==='m'?10*peso+6.25*altura-5*edad+5:10*peso+6.25*altura-5*edad-161;
+  let tdee=tmb*act;
+  if(obj==='perder')tdee-=500;
+  if(obj==='ganar')tdee+=300;
+  const carb=Math.round(tdee*.50/4);
+  const prot=Math.round(tdee*.25/4);
+  const gras=Math.round(tdee*.25/9);
+  const notes={perder:'Déficit de 500 kcal para bajar ~0.5 kg/sem',mantener:'Ingesta de mantenimiento',ganar:'Superávit de 300 kcal para ganar músculo'};
+  document.getElementById('cal-val').textContent=Math.round(tdee)+' kcal';
+  document.getElementById('cal-note').textContent=notes[obj];
+  document.getElementById('cal-carb').textContent=carb+'g';
+  document.getElementById('cal-prot').textContent=prot+'g';
+  document.getElementById('cal-gras').textContent=gras+'g';
+  document.getElementById('cal-result').classList.add('show');
+}
+function clearCal(){
+  ['cal-edad','cal-peso','cal-altura'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('cal-result').classList.remove('show');
+}
+</script>
+</body>
+</html>
