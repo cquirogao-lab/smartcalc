@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+<head>
+  <!-- ═══════════════════════════════════════════════
+       SmartCalc v2.0 · D&Q Labs
+       Arquitectura: HTML5 + CSS3 + JS Modular
+       Compatible con migración futura a React + FastAPI
+  ═══════════════════════════════════════════════ -->
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!-- ── SEO PRIMARIO ── -->
+  <title>SmartCalc — Calculadoras Online Gratis | Científica, IMC, IVA Chile, Calorías</title>
+  <meta name="description" content="SmartCalc ofrece calculadoras online gratuitas: científica avanzada, IMC, IVA Chile 19%, regla de tres, calorías, porcentaje, interés compuesto y Ley de Ohm. Rápido, preciso y sin anuncios.">
+  <meta name="keywords" content="calculadora online, calculadora científica, calculadora IMC, calculadora IVA Chile, calculadora calorías, regla de tres, interés compuesto, ley de ohm, calculadora gratis">
+  <meta name="author" content="D&Q Labs">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+  <meta name="theme-color" content="#050508">
+  <link rel="canonical" href="https://smartcalc.dqlabs.cl/">
+
+  <!-- ── OPEN GRAPH ── -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SmartCalc">
+  <meta property="og:title" content="SmartCalc — Calculadoras Online Gratis | Científica, IMC, IVA Chile">
+  <meta property="og:description" content="8 calculadoras online gratuitas: científica, IMC, IVA Chile 19%, calorías, porcentaje, interés compuesto y más. Sin publicidad, rápido y preciso.">
+  <meta property="og:url" content="https://smartcalc.dqlabs.cl/">
+  <meta property="og:image" content="https://smartcalc.dqlabs.cl/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="es_CL">
+
+  <!-- ── TWITTER CARDS ── -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@dqlabs">
+  <meta name="twitter:creator" content="@dqlabs">
+  <meta name="twitter:title" content="SmartCalc — Calculadoras Online Gratis">
+  <meta name="twitter:description" content="8 calculadoras online: científica, IMC, IVA Chile, calorías y más. Sin anuncios.">
+  <meta name="twitter:image" content="https://smartcalc.dqlabs.cl/og-image.png">
+
+  <!-- ── SCHEMA.ORG STRUCTURED DATA ── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://smartcalc.dqlabs.cl/#website",
+        "url": "https://smartcalc.dqlabs.cl/",
+        "name": "SmartCalc",
+        "description": "Plataforma de calculadoras online gratuitas",
+        "publisher": { "@id": "https://smartcalc.dqlabs.cl/#organization" },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://smartcalc.dqlabs.cl/?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://smartcalc.dqlabs.cl/#organization",
+        "name": "D&Q Labs",
+        "url": "https://smartcalc.dqlabs.cl/",
+        "logo": { "@type": "ImageObject", "url": "https://smartcalc.dqlabs.cl/logo.png" }
+      },
+      {
+        "@type": "WebApplication",
+        "name": "SmartCalc",
+        "url": "https://smartcalc.dqlabs.cl/",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Any",
+        "browserRequirements": "Requires JavaScript",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CLP" },
+        "featureList": [
+          "Calculadora Científica Avanzada",
+          "Calculadora IMC",
+          "Calculadora IVA Chile 19%",
+          "Calculadora Regla de Tres",
+          "Calculadora de Calorías",
+          "Calculadora de Porcentaje",
+          "Calculadora Interés Compuesto",
+          "Calculadora Ley de Ohm"
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <!-- ── PERFORMANCE ── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="styles.css" as="style">
+  <link rel="preload" href="app.js" as="script">
+
+  <!-- ── FUENTES ── -->
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <!-- ── FAVICON ── -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23050508'/><text y='.9em' font-size='80' x='10'>⚡</text></svg>">
+
+  <!-- ── ESTILOS ── -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <!-- ── FONDO ANIMADO ── -->
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow--1" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow--2" aria-hidden="true"></div>
+
+  <!-- ═══════════════════════════════════════
+       HEADER
+  ═══════════════════════════════════════ -->
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+
+      <a href="/" class="logo" aria-label="SmartCalc — Inicio">
+        <span class="logo-icon" aria-hidden="true">⚡</span>
+        <span class="logo-text">Smart<em>Calc</em></span>
+        <span class="logo-badge">v2.0</span>
+      </a>
+
+      <div class="header-meta">
+        <span class="header-tag" aria-hidden="true">// Calculadoras Online</span>
+        <span class="header-brand">D&amp;Q Labs</span>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════
+       HERO
+  ═══════════════════════════════════════ -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="container">
+      <p class="hero-eyebrow">8 Herramientas · Sin publicidad · Siempre gratis</p>
+      <h1 class="hero-title" id="hero-title">
+        Calculadoras<br>
+        <span class="hero-accent">inteligentes</span> online
+      </h1>
+      <p class="hero-desc">Plataforma de cálculo profesional para Chile. Científica, IMC, IVA, calorías y más — todas en un solo lugar.</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       NAVEGACIÓN — TARJETAS ICON
+  ═══════════════════════════════════════ -->
+  <nav class="calc-nav" role="navigation" aria-label="Selección de calculadora">
+    <div class="container">
+      <div class="nav-grid" role="tablist" aria-label="Calculadoras disponibles">
+
+        <button class="nav-card active" role="tab" aria-selected="true"
+          aria-controls="panel-cientifica" id="tab-cientifica" data-tab="cientifica">
+          <span class="nav-card__icon" aria-hidden="true">🔬</span>
+          <span class="nav-card__label">Científica</span>
+          <span class="nav-card__glow" aria-hidden="true"></span>
+        </button>
+
+        <button class="nav-card" role="tab" aria-selected="false"
+          aria-controls="panel-imc" id="tab-imc" data-tab="imc">
+          <span class="nav-card__icon" aria-hidden="true">⚖️</span>
+          <span class="nav-card__label">IMC</span>
+          <span class="nav-card__glow" aria-hidden="true"></span>
+        </button>
+
+        <button class="nav-card" role="tab" aria-selected="false"
+          aria-controls="panel-iva" id="tab-iva" data-tab="iva">
+          <span class="nav-card__icon" aria-hidden="true">🧾</span>
+          <span class="nav-card__label">IVA Chile</span>
+          <span class="nav-card__glow" aria-hidden="true"></span>
+        </button>
+
+        <button class="nav-card" role="tab" aria-selected="false"
+          aria-controls="panel-regla3" id="tab-regla3" data-tab="regla3">
+          <span class="nav-card__icon" aria-hidden="true">📐</span>
+          <span class="nav-card__label">Regla de 3</span>
+          <span class="nav-card__glow" aria-hidden="true"></span>
+        </button>
+
+        <button class="nav-card" role="tab" aria-selected="false"
+          aria-controls="panel-calorias" id="tab-calorias" data-tab="calorias">
+          <span class="nav-card__icon" aria-hidden="true">🔥</span>
+          <span class="nav-card__label">Calorías</span>
+          <span class="nav-card__glow" aria-hidden="true"></span>
+        </button>
+
+        <button class="nav-card" role="tab" aria-selected="false"
+          aria-controls="panel-porcentaje" id="tab-porcentaje" data-tab="porcentaje">
+          <span class="nav-card__icon" aria-hidden="true">💯</span>
+          <span class="nav-card__label">Porcentaje</span>
+          <span class="nav-card__glow" aria-hidden="true"></span>
+        </button>
+
+        <button class="nav-card" role="tab" aria-selected="false"
+          aria-controls="panel-interes" id="tab-interes" data-tab="interes">
+          <span class="nav-card__icon" aria-hidden="true">📈</span>
+          <span class="nav-card__label">Interés</span>
+          <span class="nav-card__glow" aria-hidden="true"></span>
+        </button>
+
+        <button class="nav-card" role="tab" aria-selected="false"
+          aria-controls="panel-ohm" id="tab-ohm" data-tab="ohm">
+          <span class="nav-card__icon" aria-hidden="true">⚡</span>
+          <span class="nav-card__label">Ley de Ohm</span>
+          <span class="nav-card__glow" aria-hidden="true"></span>
+        </button>
+
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════
+       ÁREA DE CALCULADORAS
+  ═══════════════════════════════════════ -->
+  <main class="calc-main" id="main-content" role="main">
+    <div class="container">
+
+      <!-- ── 1. CIENTÍFICA ── -->
+      <section class="calc-panel active" id="panel-cientifica"
+        role="tabpanel" aria-labelledby="tab-cientifica" tabindex="0">
+        <div class="panel-header">
+          <h2 class="panel-title">Calculadora <span>Científica</span></h2>
+          <p class="panel-desc">Funciones trigonométricas, logarítmicas y algebraicas. Soporta teclado físico.</p>
+        </div>
+        <div class="sci-layout">
+          <!-- Calculadora -->
+          <div class="sci-calc" role="application" aria-label="Calculadora científica">
+            <div class="sci-screen" aria-live="polite" aria-atomic="true">
+              <div class="sci-screen__memory" id="sci-memory-display" aria-label="Memoria">M: 0</div>
+              <div class="sci-screen__expr" id="sci-expr" aria-label="Expresión actual"></div>
+              <div class="sci-screen__num" id="sci-num" aria-label="Resultado">0</div>
+            </div>
+            <div class="sci-buttons" id="sci-buttons">
+              <!-- Fila 0: Memoria -->
+              <button class="sb sb--mem" data-action="mc"   aria-label="Limpiar memoria">MC</button>
+              <button class="sb sb--mem" data-action="mr"   aria-label="Recuperar memoria">MR</button>
+              <button class="sb sb--mem" data-action="ms"   aria-label="Guardar en memoria">MS</button>
+              <button class="sb sb--mem" data-action="m+"   aria-label="Sumar a memoria">M+</button>
+              <button class="sb sb--mem" data-action="m-"   aria-label="Restar de memoria">M−</button>
+              <!-- Fila 1: Funciones trig -->
+              <button class="sb sb--fn"  data-action="fn:sin("  aria-label="Seno">sin</button>
+              <button class="sb sb--fn"  data-action="fn:cos("  aria-label="Coseno">cos</button>
+              <button class="sb sb--fn"  data-action="fn:tan("  aria-label="Tangente">tan</button>
+              <button class="sb sb--fn"  data-action="fn:log("  aria-label="Logaritmo base 10">log</button>
+              <button class="sb sb--fn"  data-action="fn:ln("   aria-label="Logaritmo natural">ln</button>
+              <!-- Fila 2: Funciones matemáticas -->
+              <button class="sb sb--fn"  data-action="fn:sqrt(" aria-label="Raíz cuadrada">√x</button>
+              <button class="sb sb--fn"  data-action="fn:**2"   aria-label="Elevar al cuadrado">x²</button>
+              <button class="sb sb--fn"  data-action="fn:**"    aria-label="Elevar a la potencia">xʸ</button>
+              <button class="sb sb--fn"  data-action="fn:Math.PI" aria-label="Pi">π</button>
+              <button class="sb sb--fn"  data-action="fn:Math.E"  aria-label="Número e">e</button>
+              <!-- Fila 3: Utilidades -->
+              <button class="sb sb--fn"  data-action="fn:1/"    aria-label="Inverso">1/x</button>
+              <button class="sb sb--fn"  data-action="fn:abs("  aria-label="Valor absoluto">|x|</button>
+              <button class="sb sb--fn"  data-action="sign"     aria-label="Cambiar signo">±</button>
+              <button class="sb sb--fn"  data-action="fn:%"     aria-label="Porcentaje">%</button>
+              <button class="sb sb--del" data-action="del"      aria-label="Borrar último dígito">⌫</button>
+              <!-- Fila 4: Paréntesis + AC + operadores -->
+              <button class="sb sb--fn"  data-action="fn:("     aria-label="Abrir paréntesis">(</button>
+              <button class="sb sb--fn"  data-action="fn:)"     aria-label="Cerrar paréntesis">)</button>
+              <button class="sb sb--ac"  data-action="clear"    aria-label="Limpiar todo">AC</button>
+              <button class="sb sb--op"  data-action="fn:/"     aria-label="Dividir">÷</button>
+              <button class="sb sb--op"  data-action="fn:*"     aria-label="Multiplicar">×</button>
+              <!-- Fila 5: 7 8 9 − = (span) -->
+              <button class="sb sb--num" data-action="fn:7"     aria-label="7">7</button>
+              <button class="sb sb--num" data-action="fn:8"     aria-label="8">8</button>
+              <button class="sb sb--num" data-action="fn:9"     aria-label="9">9</button>
+              <button class="sb sb--op"  data-action="fn:-"     aria-label="Restar">−</button>
+              <button class="sb sb--eq"  data-action="equal"    aria-label="Igual" style="grid-row:span 2">=</button>
+              <!-- Fila 6: 4 5 6 + -->
+              <button class="sb sb--num" data-action="fn:4"     aria-label="4">4</button>
+              <button class="sb sb--num" data-action="fn:5"     aria-label="5">5</button>
+              <button class="sb sb--num" data-action="fn:6"     aria-label="6">6</button>
+              <button class="sb sb--op"  data-action="fn:+"     aria-label="Sumar">+</button>
+              <!-- Fila 7: 1 2 3 . -->
+              <button class="sb sb--num" data-action="fn:1"     aria-label="1">1</button>
+              <button class="sb sb--num" data-action="fn:2"     aria-label="2">2</button>
+              <button class="sb sb--num" data-action="fn:3"     aria-label="3">3</button>
+              <button class="sb sb--num" data-action="fn:."     aria-label="Decimal">.</button>
+              <!-- Fila 8: 0 (span 4) -->
+              <button class="sb sb--num sb--zero" data-action="fn:0" aria-label="0" style="grid-column:span 4">0</button>
+            </div>
+          </div>
+          <!-- Historial -->
+          <aside class="sci-history" aria-label="Historial de cálculos">
+            <div class="history-header">
+              <h3 class="history-title">Historial</h3>
+              <button class="history-clear" id="history-clear-btn" aria-label="Limpiar historial">Limpiar</button>
+            </div>
+            <ol class="history-list" id="history-list" aria-live="polite">
+              <li class="history-empty">Tus cálculos aparecerán aquí</li>
+            </ol>
+          </aside>
+        </div>
+        <!-- Indicador teclado -->
+        <p class="keyboard-hint" aria-label="Soporte de teclado disponible">
+          <kbd>Enter</kbd> = igual · <kbd>Esc</kbd> = limpiar · <kbd>Backspace</kbd> = borrar
+        </p>
+      </section>
+
+      <!-- ── 2. IMC ── -->
+      <section class="calc-panel" id="panel-imc"
+        role="tabpanel" aria-labelledby="tab-imc" tabindex="0" hidden>
+        <div class="panel-header">
+          <h2 class="panel-title">Índice de Masa <span>Corporal</span></h2>
+          <p class="panel-desc">Calcula tu IMC según los estándares de la OMS. Clasificación por categorías.</p>
+        </div>
+        <div class="form-layout">
+          <div class="glass-card">
+            <div class="form-grid">
+              <div class="field">
+                <label for="imc-peso">Peso <span class="unit">(kg)</span></label>
+                <input type="number" id="imc-peso" placeholder="70" min="1" max="500" step="0.1" aria-required="true">
+              </div>
+              <div class="field">
+                <label for="imc-altura">Altura <span class="unit">(cm)</span></label>
+                <input type="number" id="imc-altura" placeholder="170" min="50" max="250" step="1" aria-required="true">
+              </div>
+              <div class="field">
+                <label for="imc-edad">Edad <span class="unit">(años)</span></label>
+                <input type="number" id="imc-edad" placeholder="30" min="1" max="120" step="1">
+              </div>
+              <div class="field">
+                <label for="imc-sexo">Sexo biológico</label>
+                <select id="imc-sexo">
+                  <option value="m">Masculino</option>
+                  <option value="f">Femenino</option>
+                </select>
+              </div>
+            </div>
+            <div class="btn-row">
+              <button class="btn btn--primary" id="imc-calc-btn">Calcular IMC</button>
+              <button class="btn btn--ghost" id="imc-clear-btn">Limpiar</button>
+            </div>
+          </div>
+          <div class="result-panel" id="imc-result" hidden aria-live="polite">
+            <div class="result-hero">
+              <div class="result-label">Tu IMC</div>
+              <div class="result-value" id="imc-val">—</div>
+              <div class="result-badge" id="imc-cat">—</div>
+            </div>
+            <div class="imc-scale" aria-label="Escala de IMC">
+              <div class="imc-bar-track">
+                <div class="imc-bar-fill"></div>
+                <div class="imc-marker" id="imc-marker"></div>
+              </div>
+              <div class="imc-labels" aria-hidden="true">
+                <span>16</span><span>18.5</span><span>25</span><span>30</span><span>40</span>
+              </div>
+            </div>
+            <div class="imc-legend">
+              <div class="legend-item"><span class="dot dot--cyan"></span>Bajo peso</div>
+              <div class="legend-item"><span class="dot dot--green"></span>Normal</div>
+              <div class="legend-item"><span class="dot dot--amber"></span>Sobrepeso</div>
+              <div class="legend-item"><span class="dot dot--red"></span>Obesidad</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 3. IVA CHILE ── -->
+      <section class="calc-panel" id="panel-iva"
+        role="tabpanel" aria-labelledby="tab-iva" tabindex="0" hidden>
+        <div class="panel-header">
+          <h2 class="panel-title">Calculadora <span>IVA Chile</span></h2>
+          <p class="panel-desc">Calcula IVA 19% según normativa SII Chile. Agrega o descuenta el impuesto.</p>
+        </div>
+        <div class="form-layout">
+          <div class="glass-card">
+            <div class="form-grid">
+              <div class="field field--full">
+                <label for="iva-tipo">Operación</label>
+                <select id="iva-tipo">
+                  <option value="agregar">Agregar IVA — Neto → Bruto</option>
+                  <option value="descontar">Descontar IVA — Bruto → Neto</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="iva-monto">Monto <span class="unit">($)</span></label>
+                <input type="number" id="iva-monto" placeholder="100.000" min="0" step="1" aria-required="true">
+              </div>
+              <div class="field">
+                <label for="iva-tasa">Tasa IVA <span class="unit">(%)</span></label>
+                <input type="number" id="iva-tasa" value="19" min="0" max="100" step="0.1">
+              </div>
+            </div>
+            <div class="btn-row">
+              <button class="btn btn--primary" id="iva-calc-btn">Calcular IVA</button>
+              <button class="btn btn--ghost" id="iva-clear-btn">Limpiar</button>
+            </div>
+          </div>
+          <div class="result-panel" id="iva-result" hidden aria-live="polite">
+            <div class="breakdown-list">
+              <div class="breakdown-row">
+                <span class="breakdown-label">Precio neto</span>
+                <span class="breakdown-value" id="iva-neto">—</span>
+              </div>
+              <div class="breakdown-row">
+                <span class="breakdown-label" id="iva-tasa-label">IVA (19%)</span>
+                <span class="breakdown-value breakdown-value--accent" id="iva-iva">—</span>
+              </div>
+              <div class="breakdown-row breakdown-row--total">
+                <span class="breakdown-label">Total</span>
+                <span class="breakdown-value breakdown-value--hero" id="iva-total">—</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 4. REGLA DE 3 ── -->
+      <section class="calc-panel" id="panel-regla3"
+        role="tabpanel" aria-labelledby="tab-regla3" tabindex="0" hidden>
+        <div class="panel-header">
+          <h2 class="panel-title">Regla de <span>Tres</span></h2>
+          <p class="panel-desc">Proporción directa e inversa. Si A es a B, ¿cuánto es C a X?</p>
+        </div>
+        <div class="form-layout">
+          <div class="glass-card">
+            <div class="field field--full" style="margin-bottom:24px">
+              <label for="r3-tipo">Tipo de proporción</label>
+              <select id="r3-tipo">
+                <option value="directa">Directa — Si A sube, B sube</option>
+                <option value="inversa">Inversa — Si A sube, B baja</option>
+              </select>
+            </div>
+            <div class="r3-grid">
+              <div class="field"><label for="r3-a">A</label><input type="number" id="r3-a" placeholder="5" aria-required="true"></div>
+              <div class="r3-arrow" aria-hidden="true">→</div>
+              <div class="field"><label for="r3-b">B</label><input type="number" id="r3-b" placeholder="10" aria-required="true"></div>
+              <div class="field"><label for="r3-c">C</label><input type="number" id="r3-c" placeholder="3" aria-required="true"></div>
+              <div class="r3-arrow r3-arrow--accent" aria-hidden="true">→</div>
+              <div class="field">
+                <label for="r3-x">X <span class="unit">(resultado)</span></label>
+                <input type="text" id="r3-x" placeholder="?" readonly aria-readonly="true" class="input--result">
+              </div>
+            </div>
+            <div class="btn-row">
+              <button class="btn btn--primary" id="r3-calc-btn">Calcular X</button>
+              <button class="btn btn--ghost" id="r3-clear-btn">Limpiar</button>
+            </div>
+            <div class="formula-display" id="r3-formula" hidden aria-live="polite"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 5. CALORÍAS ── -->
+      <section class="calc-panel" id="panel-calorias"
+        role="tabpanel" aria-labelledby="tab-calorias" tabindex="0" hidden>
+        <div class="panel-header">
+          <h2 class="panel-title">Calculadora de <span>Calorías</span></h2>
+          <p class="panel-desc">TMB y TDEE con fórmula Mifflin-St Jeor. Distribución de macronutrientes incluida.</p>
+        </div>
+        <div class="form-layout">
+          <div class="glass-card">
+            <div class="field field--full" style="margin-bottom:20px">
+              <label>Sexo biológico</label>
+              <div class="toggle-group" role="radiogroup" aria-label="Sexo biológico">
+                <button class="toggle-btn active" role="radio" aria-checked="true" data-sex="m" id="cal-m">Masculino</button>
+                <button class="toggle-btn" role="radio" aria-checked="false" data-sex="f" id="cal-f">Femenino</button>
+              </div>
+            </div>
+            <div class="form-grid">
+              <div class="field"><label for="cal-edad">Edad <span class="unit">(años)</span></label><input type="number" id="cal-edad" placeholder="30" min="1" max="120"></div>
+              <div class="field"><label for="cal-peso">Peso <span class="unit">(kg)</span></label><input type="number" id="cal-peso" placeholder="70" min="1" max="500"></div>
+              <div class="field"><label for="cal-altura">Altura <span class="unit">(cm)</span></label><input type="number" id="cal-altura" placeholder="170" min="50" max="250"></div>
+              <div class="field">
+                <label for="cal-act">Actividad física</label>
+                <select id="cal-act">
+                  <option value="1.2">Sedentario — sin ejercicio</option>
+                  <option value="1.375">Ligero — 1-3 días/sem</option>
+                  <option value="1.55" selected>Moderado — 3-5 días/sem</option>
+                  <option value="1.725">Activo — 6-7 días/sem</option>
+                  <option value="1.9">Muy activo — trabajo físico</option>
+                </select>
+              </div>
+              <div class="field field--full">
+                <label for="cal-obj">Objetivo</label>
+                <select id="cal-obj">
+                  <option value="perder">Perder peso — déficit 500 kcal</option>
+                  <option value="mantener" selected>Mantener peso</option>
+                  <option value="ganar">Ganar músculo — superávit 300 kcal</option>
+                </select>
+              </div>
+            </div>
+            <div class="btn-row">
+              <button class="btn btn--primary" id="cal-calc-btn">Calcular</button>
+              <button class="btn btn--ghost" id="cal-clear-btn">Limpiar</button>
+            </div>
+          </div>
+          <div class="result-panel" id="cal-result" hidden aria-live="polite">
+            <div class="result-hero">
+              <div class="result-label">Calorías diarias</div>
+              <div class="result-value" id="cal-val" style="color:var(--c-purple)">—</div>
+              <div class="result-badge" id="cal-note" style="background:rgba(192,106,255,.15);color:var(--c-purple)">—</div>
+            </div>
+            <div class="macro-grid">
+              <div class="macro-card macro-card--amber">
+                <div class="macro-val" id="cal-carb">—</div>
+                <div class="macro-label">Carbos (g)</div>
+                <div class="macro-pct">50%</div>
+              </div>
+              <div class="macro-card macro-card--cyan">
+                <div class="macro-val" id="cal-prot">—</div>
+                <div class="macro-label">Proteína (g)</div>
+                <div class="macro-pct">25%</div>
+              </div>
+              <div class="macro-card macro-card--red">
+                <div class="macro-val" id="cal-gras">—</div>
+                <div class="macro-label">Grasas (g)</div>
+                <div class="macro-pct">25%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 6. PORCENTAJE ── -->
+      <section class="calc-panel" id="panel-porcentaje"
+        role="tabpanel" aria-labelledby="tab-porcentaje" tabindex="0" hidden>
+        <div class="panel-header">
+          <h2 class="panel-title">Calculadora de <span>Porcentaje</span></h2>
+          <p class="panel-desc">Tres modos: porcentaje de un número, variación porcentual y valor total.</p>
+        </div>
+        <div class="form-layout">
+          <div class="glass-card">
+            <div class="field field--full" style="margin-bottom:24px">
+              <label for="pct-modo">Modo de cálculo</label>
+              <select id="pct-modo">
+                <option value="de">¿Cuánto es X% de Y?</option>
+                <option value="que">¿Qué % es X de Y?</option>
+                <option value="var">Variación % de A a B</option>
+              </select>
+            </div>
+            <div class="form-grid" id="pct-fields">
+              <div class="field"><label for="pct-a" id="pct-a-label">Porcentaje (%)</label><input type="number" id="pct-a" placeholder="15"></div>
+              <div class="field"><label for="pct-b" id="pct-b-label">Número base</label><input type="number" id="pct-b" placeholder="200"></div>
+            </div>
+            <div class="btn-row">
+              <button class="btn btn--primary" id="pct-calc-btn">Calcular</button>
+              <button class="btn btn--ghost" id="pct-clear-btn">Limpiar</button>
+            </div>
+            <div class="result-panel result-panel--inline" id="pct-result" hidden aria-live="polite">
+              <div class="result-label">Resultado</div>
+              <div class="result-value" id="pct-val" style="color:var(--c-green)">—</div>
+              <div class="result-badge" id="pct-formula" style="background:rgba(125,255,106,.1);color:var(--c-green)">—</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 7. INTERÉS COMPUESTO ── -->
+      <section class="calc-panel" id="panel-interes"
+        role="tabpanel" aria-labelledby="tab-interes" tabindex="0" hidden>
+        <div class="panel-header">
+          <h2 class="panel-title">Interés <span>Compuesto</span></h2>
+          <p class="panel-desc">Calcula el crecimiento de tu inversión con capitalización periódica.</p>
+        </div>
+        <div class="form-layout">
+          <div class="glass-card">
+            <div class="form-grid">
+              <div class="field"><label for="ic-capital">Capital inicial <span class="unit">($)</span></label><input type="number" id="ic-capital" placeholder="1.000.000" min="0"></div>
+              <div class="field"><label for="ic-tasa">Tasa anual <span class="unit">(%)</span></label><input type="number" id="ic-tasa" placeholder="8" min="0" max="100" step="0.1"></div>
+              <div class="field"><label for="ic-años">Tiempo <span class="unit">(años)</span></label><input type="number" id="ic-años" placeholder="10" min="1" max="100"></div>
+              <div class="field">
+                <label for="ic-freq">Capitalización</label>
+                <select id="ic-freq">
+                  <option value="1">Anual</option>
+                  <option value="2">Semestral</option>
+                  <option value="4">Trimestral</option>
+                  <option value="12" selected>Mensual</option>
+                  <option value="365">Diaria</option>
+                </select>
+              </div>
+              <div class="field field--full"><label for="ic-aporte">Aporte periódico <span class="unit">($, opcional)</span></label><input type="number" id="ic-aporte" placeholder="0" min="0"></div>
+            </div>
+            <div class="btn-row">
+              <button class="btn btn--primary" id="ic-calc-btn">Calcular</button>
+              <button class="btn btn--ghost" id="ic-clear-btn">Limpiar</button>
+            </div>
+          </div>
+          <div class="result-panel" id="ic-result" hidden aria-live="polite">
+            <div class="breakdown-list">
+              <div class="breakdown-row"><span class="breakdown-label">Capital inicial</span><span class="breakdown-value" id="ic-r-capital">—</span></div>
+              <div class="breakdown-row"><span class="breakdown-label">Aportes totales</span><span class="breakdown-value" id="ic-r-aportes">—</span></div>
+              <div class="breakdown-row"><span class="breakdown-label">Intereses ganados</span><span class="breakdown-value breakdown-value--accent" id="ic-r-intereses">—</span></div>
+              <div class="breakdown-row breakdown-row--total"><span class="breakdown-label">Monto final</span><span class="breakdown-value breakdown-value--hero" id="ic-r-total">—</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 8. LEY DE OHM ── -->
+      <section class="calc-panel" id="panel-ohm"
+        role="tabpanel" aria-labelledby="tab-ohm" tabindex="0" hidden>
+        <div class="panel-header">
+          <h2 class="panel-title">Ley de <span>Ohm</span></h2>
+          <p class="panel-desc">Calcula Voltaje (V), Corriente (I), Resistencia (R) o Potencia (P). Ingresa dos valores.</p>
+        </div>
+        <div class="form-layout">
+          <div class="glass-card">
+            <div class="ohm-diagram" aria-hidden="true">
+              <div class="ohm-circle ohm-circle--v">V</div>
+              <div class="ohm-equals">=</div>
+              <div class="ohm-circle ohm-circle--i">I</div>
+              <div class="ohm-times">×</div>
+              <div class="ohm-circle ohm-circle--r">R</div>
+            </div>
+            <div class="form-grid">
+              <div class="field">
+                <label for="ohm-v">Voltaje <span class="unit">(V)</span></label>
+                <input type="number" id="ohm-v" placeholder="Dejar vacío para calcular" min="0" step="0.01">
+              </div>
+              <div class="field">
+                <label for="ohm-i">Corriente <span class="unit">(A)</span></label>
+                <input type="number" id="ohm-i" placeholder="Dejar vacío para calcular" min="0" step="0.001">
+              </div>
+              <div class="field">
+                <label for="ohm-r">Resistencia <span class="unit">(Ω)</span></label>
+                <input type="number" id="ohm-r" placeholder="Dejar vacío para calcular" min="0" step="0.01">
+              </div>
+              <div class="field">
+                <label for="ohm-p">Potencia <span class="unit">(W)</span></label>
+                <input type="number" id="ohm-p" placeholder="Dejar vacío para calcular" min="0" step="0.01">
+              </div>
+            </div>
+            <div class="btn-row">
+              <button class="btn btn--primary" id="ohm-calc-btn">Calcular</button>
+              <button class="btn btn--ghost" id="ohm-clear-btn">Limpiar</button>
+            </div>
+            <div class="result-panel result-panel--inline" id="ohm-result" hidden aria-live="polite">
+              <div class="ohm-results" id="ohm-results-grid"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /container -->
+  </main>
+
+  <!-- ═══════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════ -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <div class="footer-logo">⚡ Smart<em>Calc</em></div>
+        <p class="footer-tagline">Calculadoras online · Chile · Siempre gratis</p>
+      </div>
+      <div class="footer-dev">
+        <span class="footer-dev__by">Desarrollado por</span>
+        <strong class="footer-dev__name">D&amp;Q Labs</strong>
+        <span class="footer-dev__copy">© 2025 · v2.0</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ── TOAST NOTIFICATIONS ── -->
+  <div class="toast-container" id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- ── SCRIPT PRINCIPAL ── -->
+  <script src="app.js" defer></script>
+
+</body>
+</html>

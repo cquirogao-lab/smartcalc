@@ -1,0 +1,11 @@
+# SmartCalc · D&Q Labs
+# robots.txt
+
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://smartcalc.dqlabs.cl/sitemap.xml
+
+# Crawl delay (opcional, respetar bots)
+Crawl-delay: 1
