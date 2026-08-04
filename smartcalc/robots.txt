@@ -1,11 +1,7 @@
-# SmartCalc · D&Q Labs
+# SmartCalc Prime - D&Q Labs
 # robots.txt
 
 User-agent: *
 Allow: /
 
-# Sitemaps
-Sitemap: https://smartcalc.dqlabs.cl/sitemap.xml
-
-# Crawl delay (opcional, respetar bots)
-Crawl-delay: 1
+Sitemap: https://smartcalcprime.com/sitemap.xml
