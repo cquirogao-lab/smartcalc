@@ -3,58 +3,58 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
   <url>
-    <loc>https://smartcalc.dqlabs.cl/</loc>
+    <loc>https://smartcalcprime.com
     <lastmod>2025-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="es-CL" href="https://smartcalc.dqlabs.cl/"/>
+    <xhtml:link rel="alternate" hreflang="es-CL" href="https://smartcalcprime.com/"/>
   </url>
 
   <!-- Calculadoras como anchors (SPA) -->
   <url>
-    <loc>https://smartcalc.dqlabs.cl/#cientifica</loc>
+    <loc>https://smartcalcprime.com/#cientifica</loc>
     <lastmod>2025-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://smartcalc.dqlabs.cl/#imc</loc>
+    <loc>https://smartcalcprime.com/#imc</loc>
     <lastmod>2025-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://smartcalc.dqlabs.cl/#iva</loc>
+    <loc>https://smartcalcprime.com/#iva</loc>
     <lastmod>2025-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://smartcalc.dqlabs.cl/#regla3</loc>
+    <loc>https://smartcalcprime.com/#regla3</loc>
     <lastmod>2025-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://smartcalc.dqlabs.cl/#calorias</loc>
+    <loc>https://smartcalcprime.com/#calorias</loc>
     <lastmod>2025-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://smartcalc.dqlabs.cl/#porcentaje</loc>
+    <loc>https://smartcalcprime.com/#porcentaje</loc>
     <lastmod>2025-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://smartcalc.dqlabs.cl/#interes</loc>
+    <loc>https://smartcalcprime.com/#interes</loc>
     <lastmod>2025-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://smartcalc.dqlabs.cl/#ohm</loc>
+    <loc>https://smartcalcprime.com/#ohm</loc>
     <lastmod>2025-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
