@@ -1,4 +1,6 @@
-/**
+
+/* ═══════════════════════════════════════════════
+   MÓDULO: IM/**
  * SmartCalc v2.0 — app.js
  * Arquitectura: JS Modular (IIFE + módulos por calculadora)
  * Compatible con migración futura a React/FastAPI
@@ -311,8 +313,7 @@ const SciCalc = {
   }
 };
 
-/* ═══════════════════════════════════════════════
-   MÓDULO: IMC
+
 ═══════════════════════════════════════════════ */
 const IMCCalc = {
   init() {
