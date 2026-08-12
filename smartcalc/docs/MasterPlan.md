@@ -6,7 +6,7 @@
 
 **Proyecto iniciado:** Agosto 2026
 
-**Empresa:** D&Q Labs
+**Empresa:** ThePoorLabs
 
 ---
 

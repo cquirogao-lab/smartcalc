@@ -4,50 +4,12 @@
  * SmartCalc v2.0 — app.js
  * Arquitectura: JS Modular (IIFE + módulos por calculadora)
  * Compatible con migración futura a React/FastAPI
- * Autor: D&Q Labs
+ * Autor: ThePoorLabs
  */
 
 'use strict';
 
 
-/* ═══════════════════════════════════════════════
-   MÓDULO: NAVEGACIÓN
-═══════════════════════════════════════════════ */
-const NavModule = {
-  init() {
-    const tabs   = document.querySelectorAll('.nav-card[data-tab]');
-    const panels = document.querySelectorAll('.calc-panel');
-
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        const target = tab.dataset.tab;
-
-        // Actualizar tabs
-        tabs.forEach(t => {
-          t.classList.remove('active');
-          t.setAttribute('aria-selected', 'false');
-        });
-        tab.classList.add('active');
-        tab.setAttribute('aria-selected', 'true');
-
-        // Actualizar paneles
-        panels.forEach(p => {
-          if (p.id === `panel-${target}`) {
-            p.hidden = false;
-            p.classList.add('active');
-            p.focus({ preventScroll: true });
-          } else {
-            p.hidden = true;
-            p.classList.remove('active');
-          }
-        });
-
-        // Scroll suave al área de cálculo
-        document.getElementById('main-content')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      });
-    });
-  }
-};
 
 /* ═══════════════════════════════════════════════
    MÓDULO: CALCULADORA CIENTÍFICA
@@ -248,8 +210,10 @@ const SciCalc = {
   }
 };
 
-
+/* ═══════════════════════════════════════════════
+   MÓDULO: IMC (Índice de Masa Corporal)
 ═══════════════════════════════════════════════ */
+
 const IMCCalc = {
   init() {
     document.getElementById('imc-calc-btn')?.addEventListener('click', () => this.calculate());
@@ -668,6 +632,6 @@ document.addEventListener('DOMContentLoaded', () => {
   Performance.init();
 
   // Log de versión en consola (útil para debugging en producción)
-  console.log('%cSmartCalc v2.0 · D&Q Labs', 'color:#7dff6a;font-family:monospace;font-size:14px;');
+  console.log('%cSmartCalc v2.0 · ThePoorLabs', 'color:#7dff6a;font-family:monospace;font-size:14px;');
   console.log('%cArquitectura: HTML5 + CSS3 + JS Modular', 'color:#8888aa;font-family:monospace;font-size:10px;');
 });

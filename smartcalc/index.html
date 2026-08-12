@@ -2,7 +2,7 @@
 <html lang="es-CL" dir="ltr">
 <head>
   <!-- ═══════════════════════════════════════════════
-       SmartCalc v2.1 · D&Q Labs
+       SmartCalc v2.1 · ThePoorLabs
        Arquitectura: HTML5 + CSS3 + JS Modular
        Compatible con migración futura a React + FastAPI
   ═══════════════════════════════════════════════ -->
@@ -24,9 +24,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   <!-- ── SEO PRIMARIO ── -->
-  <title>Calculadoras Online Gratis | Científica, IMC, IVA Chile, Interés Compuesto | SmartCalc Prime</title>
-  <meta name="description" content="SmartCalc ofrece calculadoras online gratuitas: científica avanzada, IMC, IVA Chile 19%, regla de tres, calorías, porcentaje, interés compuesto y Ley de Ohm. Rápido, preciso y sin anuncios.">
-  <meta name="author" content="D&Q Labs">
+  <title>Calculadoras Online Gratis | SmartCalc</title>
+  <meta name="description" content="SmartCalc ofrece calculadoras online gratuitas: científica avanzada, IMC, IVA Chile 19%, regla de tres, calorías, porcentaje, interés compuesto y Ley de Ohm. Rápidas, precisas y fáciles de usar.">
+  <meta name="author" content="ThePoorLabs">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
   <meta name="theme-color" content="#050508">
   <meta name="mobile-web-app-capable" content="yes">
@@ -43,6 +43,7 @@
   <meta property="og:description" content="8 calculadoras online gratuitas: científica, IMC, IVA Chile 19%, calorías, porcentaje, interés compuesto y más. Sin publicidad, rápido y preciso.">
   <meta property="og:url" content="https://smartcalcprime.com/">
   <meta property="og:image" content="https://smartcalcprime.com/og-image.png">
+  <meta property="og:image:alt" content="SmartCalc — Calculadoras Online Gratis">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="es_CL">
@@ -51,57 +52,72 @@
 
   <!-- ── TWITTER CARDS ── -->
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://smartcalcprime.com/og-image.png">
   <meta name="twitter:title" content="SmartCalc Prime — Calculadoras Online Gratis">
   <meta name="twitter:description" content="8 calculadoras online: científica, IMC, IVA Chile, calorías y más. Sin anuncios.">
-  <meta name="twitter:image" content="https://smartcalcprime.com/og-image.png">
+  <meta name="twitter:image:alt" content="SmartCalc — Calculadoras Online Gratis">
 
    <!-- ── SCHEMA.ORG STRUCTURED DATA ── -->
    <script type="application/ld+json">
-   {
-     "@context": "https://schema.org",
-     "@graph": [
-       {
-         "@type": "WebSite",
-         "@id": "https://smartcalcprime.com/#website",
-         "url": "https://smartcalcprime.com/",
-         "name": "SmartCalc Prime",
-         "description": "Plataforma de calculadoras online gratuitas",
-         "publisher": { "@id": "https://smartcalcprime.com/#organization" },
-         "potentialAction": {
-           "@type": "SearchAction",
-           "target": "https://smartcalcprime.com/?q={search_term_string}",
-           "query-input": "required name=search_term_string"
-         }
-       },
-       {
-         "@type": "Organization",
-         "@id": "https://smartcalcprime.com/#organization",
-         "name": "thepoor Labs", "brand":{ "@type":"Brand","name":"SmartCalc Prime"},
-         "url": "https://smartcalcprime.com/",
-         "logo": { "@type": "ImageObject", "url": "https://smartcalcprime.com/logo.png" }
-       },
-       {
-         "@type": "WebApplication",
-         "name": "SmartCalc Prime",
-         "url": "https://smartcalcprime.com/",
-         "applicationCategory":"EducationalApplication",
-         "operatingSystem": "Any",
-         "browserRequirements": "Requires JavaScript",
-         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CLP" },
-         "featureList": [
-           "Calculadora Científica Avanzada",
-           "Calculadora IMC",
-           "Calculadora IVA Chile 19%",
-           "Calculadora Regla de Tres",
-           "Calculadora de Calorías",
-           "Calculadora de Porcentaje",
-           "Calculadora Interés Compuesto",
-           "Calculadora Ley de Ohm"
-         ]
-       }
-     ]
-   }
-    </script>
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://smartcalcprime.com/#website",
+      "url": "https://smartcalcprime.com/",
+      "name": "SmartCalc Prime",
+      "description": "Plataforma de calculadoras online gratuitas",
+      "publisher": {
+        "@id": "https://smartcalcprime.com/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://smartcalcprime.com/?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://smartcalcprime.com/#organization",
+      "name": "ThePoorLabs",
+      "brand": {
+        "@type": "Brand",
+        "name": "SmartCalc Prime"
+      },
+      "url": "https://smartcalcprime.com/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://smartcalcprime.com/logo.png"
+      }
+    },
+    {
+      "@type": "WebApplication",
+      "@id": "https://smartcalcprime.com/#application",
+      "name": "SmartCalc Prime",
+      "url": "https://smartcalcprime.com/",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Any",
+      "browserRequirements": "Requires JavaScript",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "CLP"
+      },
+      "featureList": [
+        "Calculadora Científica Avanzada",
+        "Calculadora IMC",
+        "Calculadora IVA Chile 19%",
+        "Calculadora Regla de Tres",
+        "Calculadora de Calorías",
+        "Calculadora de Porcentaje",
+        "Calculadora de Interés Compuesto",
+        "Calculadora Ley de Ohm"
+      ]
+    }
+  ]
+}
+</script>
 
   <!-- ── PERFORMANCE ── -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -146,7 +162,7 @@
 
       <div class="header-meta">
         <span class="header-tag" aria-hidden="true">// Calculadoras Online</span>
-        <span class="header-brand">D&amp;Q Labs</span>
+        <span class="header-brand">ThePoorLabs</span>
       </div>
 
     </div>
@@ -673,7 +689,7 @@
       </div>
       <div class="footer-dev">
         <span class="footer-dev__by">Desarrollado por</span>
-        <strong class="footer-dev__name">D&amp;Q Labs</strong>
+        <strong class="footer-dev__name">ThePoorLabs</strong>
         <span class="footer-dev__copy">© 2025 · v2.0</span>
       </div>
     </div>
@@ -684,6 +700,7 @@
 
   <!-- ── SCRIPT PRINCIPAL ── -->
   <script src="assets/js/utils.js"></script>
+  <script src="assets/js/navigation.js"></script>
   <script src="app.js"></script>
 
 </body>

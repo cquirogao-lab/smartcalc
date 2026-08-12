@@ -1,4 +1,4 @@
-# SmartCalc Prime - D&Q Labs
+# SmartCalc Prime - ThePoorLabs
 # robots.txt
 
 User-agent: *
