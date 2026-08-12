@@ -43,4 +43,3 @@ const NavModule = {
     });
   }
 };
-NavModule.init();
